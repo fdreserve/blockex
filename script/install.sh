@@ -93,7 +93,7 @@ installMongo () {
 
 installBlockEx () {
     echo "Installing BlockEx..."
-    git clone https://github.com/LoulouCrypto/blockex.git /home/explorer/blockex
+    git clone https://github.com/fdreserve/blockex.git /home/explorer/blockex
     cd /home/explorer/blockex
     yarn install
     cat > /home/explorer/blockex/config.server.js << EOL
