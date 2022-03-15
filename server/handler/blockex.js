@@ -454,7 +454,7 @@ const getSupply = async (req, res) => {
       return balanceAgregation[0].total;
     });
 
-    const supply = { c: (totalSupply - ((config.nftNodes.Rnodes * config.coinDetails.reservenodeCollateral) + (config.nftNodes.Cnodes * config.coinDetails.cashnodeCollateral) + (config.nftNodes.Snodes * mncoins))), t: totalSupply }
+    const supply = { c: (totalSupply - ((config.nftNodes.Rnodes * config.coinDetails.reservenodeCollateral) + (config.nftNodes.Cnodes * config.coinDetails.cashnodeCollateral) + (config.nftNodes.Snodes * mncoins))), t: totalSupply, m: chain.maxSupply }
 
     res.json(supply);
   } catch (err) {
