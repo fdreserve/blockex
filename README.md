@@ -25,7 +25,7 @@ Features:
 4. `usermod -aG sudo explorer`
 5. Ensure your coin RPC is running
 6. `su explorer`
-7. `bash <( curl https://raw.githubusercontent.com/LoulouCrypto/blockex/master/script/install.sh )`
+7. `bash <( curl https://raw.githubusercontent.com/fdreserve/blockex/main/script/install.sh )`
 
 ## Post-Installation
 
@@ -63,7 +63,7 @@ Our geniuses here at BulwarkCorp™ have put together a script to Install Bulwar
 This will install the latest Bulwark wallet and create a rpc username/password before starting the daemon.
 
 ## Manual Install
-`git clone https://github.com/LoulouCrypto/blockex.git` - copy repo to local folder.
+`git clone https://github.com/fdreserve/blockex.git` - copy repo to local folder.
 
 `cd blockex` - change into project directory.
 
