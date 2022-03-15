@@ -71,7 +71,7 @@ const config = {
   ],
 
   freegeoip: {
-    api: 'https://extreme-ip-lookup.com/json/', //@todo need to find new geoip service as the limits are too small now (hitting limits) 
+    api: 'https://api.freegeoip.app/json/', //@todo need to find new geoip service as the limits are too small now (hitting limits) 
     key: 'XXXXXXXXXXXXXXXXX' //API Key 
   },
   coinMarketCap: {
