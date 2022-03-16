@@ -409,7 +409,7 @@ const getMasternodeCount = async (req, res) => {
   try {
     const masternodeCount = await cache.getFromCache("masternodeCount", moment().utc().add(60, 'seconds').unix(), async () => {
       const coin = await Coin.findOne().sort({ createdAt: -1 });
-      return { enabled: coin.mnsOn, total: coin.mnsOff + coin.mnsOn };
+      return { total: coin.mnsOn, ReserveNode: coin.rnOn, CashNode: coin.cnOn, SecureNode: coin.snOn  };
     });
 
     res.json(masternodeCount);
