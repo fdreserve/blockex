@@ -73,6 +73,8 @@ class Peer extends Component {
           <h5>addnode=[2a02:c207:2051:9093::1]</h5><br/>
           <h5>addnode=[2a02:c206:2051:9083::1]</h5><br/>
           <h5>addnode=[2a02:c206:2051:9077::1]</h5><br/>
+          <br/>
+          <br/>
           </div>
       </div>
     );
