@@ -59,6 +59,7 @@ class Peer extends Component {
           })) } />
           <HorizontalRule title="AddNodes" />
           <div>
+          <br/>
           <h5>addnode=161.97.167.197</h5><br/>
           <h5>addnode=161.97.167.201</h5><br/>
           <h5>addnode=144.91.95.43</h5><br/>
