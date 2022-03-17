@@ -10,6 +10,7 @@ import React from 'react';
 import GraphLineFull from '../component/Graph/GraphLineFull';
 import HorizontalRule from '../component/HorizontalRule';
 import Notification from '../component/Notification';
+import blockchain from '../../lib/blockchain';
 
 import config from '../../config'
 
@@ -85,6 +86,37 @@ class Statistics extends Component {
         prices.set(k, c.usd);
       }
     });
+    
+  //Mns Roi
+  const sns = this.props.coin.snOn;
+  const cns = this.props.coin.cnOn;
+  const rns = this.props.coin.rnOn;
+  const snsubsidy = blockchain.getSnSubsidy(this.props.coin.blocks);
+  const cnsubsidy = blockchain.getCnSubsidy(this.props.coin.blocks);
+  const rnsubsidy = blockchain.getRnSubsidy(this.props.coin.blocks);
+  const snroi = blockchain.getSnROI(snsubsidy, sns);
+  const cnroi = blockchain.getCnROI(cnsubsidy, cns);
+  const rnroi = blockchain.getRnROI(rnsubsidy, rns);
+  // Mn Rewards
+  const snblockday = blockchain.getSNBlocksPerDay(sns);
+  const cnblockday = blockchain.getCNBlocksPerDay(cns);
+  const rnblockday = blockchain.getRNBlocksPerDay(rns);
+  const snblockmonth = blockchain.getSNBlocksPerMonth(sns);
+  const cnblockmonth = blockchain.getCNBlocksPerMonth(cns);
+  const rnblockmonth = blockchain.getRNBlocksPerMonth(rns);
+  const snblockyear = blockchain.getSNBlocksPerYear(sns);
+  const cnblockyear = blockchain.getCNBlocksPerYear(cns);
+  const rnblockyear = blockchain.getRNBlocksPerYear(rns);
+  const snrewardday = (snblockday  * snsubsidy);
+  const cnrewardday = (cnblockday * cnsubsidy);
+  const rnrewardday = (rnblockday * rnsubsidy);
+  const snrewardmonth = (snblockmonth  * snsubsidy);
+  const cnrewardmonth = (cnblockmonth * cnsubsidy);
+  const rnrewardmonth = (rnblockmonth * rnsubsidy);
+  const snrewardyear = (snblockyear  * snsubsidy);
+  const cnrewardyear = (cnblockyear * cnsubsidy);
+  const rnrewardyear = (rnblockyear * rnsubsidy);
+  
 
     // Generate averages for each key in each map.
     const l = (24 * 60) / 5; // How many 5 min intervals in a day.
@@ -122,7 +154,7 @@ class Statistics extends Component {
 
     return (
       <div className="animated fadeInUp">
-        <HorizontalRule title="Statistics" />
+        <HorizontalRule title="FDR Statistics" />
         {Array.from(hashes.keys()).slice(1, -1).length <= 6 && <Notification />}
         <div>
           <div className="row">
@@ -138,20 +170,6 @@ class Statistics extends Component {
                   labels={Array.from(prices.keys()).slice(1, -1)} />
               </div>
             </div>
-            <div className="col-md-12 col-lg-6">
-              <h3>Masternodes Online Last 7 Days</h3>
-              <h4>{this.props.coin.mnsOn} {day}</h4>
-              <h5>Snodes: {this.props.coin.snOn} - Cnodes: {this.props.coin.cnOn} - Rnodes: {this.props.coin.rnOn}</h5>
-              <div>
-                <GraphLineFull
-                  color="#1991eb"
-                  data={Array.from(mns.values()).slice(1, -1)}
-                  height="210px"
-                  labels={Array.from(mns.keys()).slice(1, -1)} />
-              </div>
-            </div>
-          </div>
-            <div className="row">
               <div className="col-md-12 col-lg-6">
                 <h3>Network Hash Rate Last 7 Days</h3>
                 <h4>{numeral(netHash.hash).format('0,0.0000')} {netHash.label}/s {day}</h4>
@@ -164,16 +182,60 @@ class Statistics extends Component {
                     labels={Array.from(hashes.keys()).slice(1, -1)} />
                 </div>
               </div>
-              <div className="col-md-12 col-lg-6">
-                <h3>Transactions Last 7 Days</h3>
-                <h4>{numeral(tTX).format('0,0')} {day}</h4>
-                <h5>Average: {numeral(avgTX).format('0,0')} Per Hour</h5>
+          </div>
+          <HorizontalRule title="Masternodes Statistics" />
+          <div className="row">
+            <div className="col-md-12 col-lg-6">
+              <h3>Masternodes Online Last 7 Days</h3>
+              <h4>{this.props.coin.mnsOn} {day}</h4>
+              <h5>Snodes: {this.props.coin.snOn} - Cnodes: {this.props.coin.cnOn} - Rnodes: {this.props.coin.rnOn}</h5>
+              <div>
+                <GraphLineFull
+                  color="#1991eb"
+                  data={Array.from(mns.values()).slice(1, -1)}
+                  height="210px"
+                  labels={Array.from(mns.keys()).slice(1, -1)} />
+              </div>
+            </div>
+            <div className="col-md-12 col-lg-6">
+              <h3>Secure Node Statistics</h3>
+              <h4>ROI: {numeral(snroi).format('0,0.0')}%</h4>
+              <h5>Online: {this.props.coin.snOn}</h5>
+              <div>
+                <b>
+                <div>Collateral : {blockchain.mncoins} FDR</div>
+                <div>Daily Rewards: {numeral(snrewardday).format('0,0.00')} FDR</div>
+                <div>Monthly Rewards: {numeral(snrewardmonth).format('0,0.00')} FDR</div>
+                <div>Yearly Rewars: {numeral(snrewardyear).format('0,0.00')} FDR</div>
+                </b>
+              </div>
+            </div>
+          </div>
+            <div className="row">
+            <div className="col-md-12 col-lg-6">
+                <h3>Cash Node Statistics</h3>
+                <h4>ROI: {numeral(cnroi).format('0,0.0')}%</h4>
+                <h5>Online: {this.props.coin.cnOn}</h5>
                 <div>
-                  <GraphLineFull
-                    color="#1991eb"
-                    data={Array.from(txs.values())}
-                    height="210px"
-                    labels={Array.from(txs.keys())} />
+                  <b>
+                  <div>Collateral : {blockchain.cncoins} FDR</div>
+                  <div>Daily Rewards: {numeral(cnrewardday).format('0,0.00')} FDR</div>
+                  <div>Monthly Rewards: {numeral(cnrewardmonth).format('0,0.00')} FDR</div>
+                  <div>Yearly Rewars: {numeral(cnrewardyear).format('0,0.00')} FDR</div>
+                  </b>
+                </div>
+              </div>
+              <div className="col-md-12 col-lg-6">
+                <h3>Reserve Node Statistics</h3>
+                <h4>ROI: {numeral(rnroi).format('0,0.0')}%</h4>
+                <h5>Online: {this.props.coin.rnOn}</h5>
+                <div>
+                  <b>
+                  <div>Collateral : {blockchain.rncoins} FDR</div>
+                  <div>Daily Rewards: {numeral(rnrewardday).format('0,0.00')} FDR</div>
+                  <div>Monthly Rewards: {numeral(rnrewardmonth).format('0,0.00')} FDR</div>
+                  <div>Yearly Rewars: {numeral(rnrewardyear).format('0,0.00')} FDR</div>
+                  </b>
                 </div>
               </div>
             </div>
@@ -182,6 +244,7 @@ class Statistics extends Component {
     );
   };
 }
+
 
 const mapDispatch = dispatch => ({
   getCoins: () => Actions.getCoinsWeek(dispatch),
