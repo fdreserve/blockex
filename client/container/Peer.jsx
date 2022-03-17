@@ -57,6 +57,23 @@ class Peer extends Component {
               </div>
             )
           })) } />
+          <HorizontalRule title="AddNodes" />
+          <div>
+          <h5>addnode=161.97.167.197</h5><br/>
+          <h5>addnode=161.97.167.201</h5><br/>
+          <h5>addnode=144.91.95.43</h5><br/>
+          <h5>addnode=144.91.95.44</h5><br/>
+          <h5>addnode=167.86.119.223</h5><br/>
+          <h5>addnode=164.68.96.160</h5><br/>
+          <h5>addnode=167.86.124.134</h5><br/>
+          <h5>addnode=[2a02:c207:2027:2245::1]</h5><br/>
+          <h5>addnode=[2a02:c207:2027:5644::1]</h5><br/>
+          <h5>addnode=[2a02:c207:2027:9123::1]</h5><br/>
+          <h5>addnode=[2a02:c207:2051:9094::1]</h5><br/>
+          <h5>addnode=[2a02:c207:2051:9093::1]</h5><br/>
+          <h5>addnode=[2a02:c206:2051:9083::1]</h5><br/>
+          <h5>addnode=[2a02:c206:2051:9077::1]</h5><br/>
+          </div>
       </div>
     );
   };
