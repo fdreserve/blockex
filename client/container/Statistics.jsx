@@ -203,10 +203,11 @@ class Statistics extends Component {
               <h5>Online: {this.props.coin.snOn}</h5>
               <div>
                 <b>
-                <div>Collateral : {blockchain.mncoins} FDR</div>
-                <div>Daily Rewards: {numeral(snrewardday).format('0,0.00')} FDR</div>
-                <div>Monthly Rewards: {numeral(snrewardmonth).format('0,0.00')} FDR</div>
-                <div>Yearly Rewars: {numeral(snrewardyear).format('0,0.00')} FDR</div>
+                <br/>
+                <div>Collateral : {blockchain.mncoins} FDR - {numeral(blockchain.mncoins * this.props.coin.usd).format('0,0.00') } $</div>
+                <div>Daily Rewards: {numeral(snrewardday).format('0,0.00')} FDR - {numeral(snrewardday * this.props.coin.usd).format('0,0.00') } $</div> 
+                <div>Monthly Rewards: {numeral(snrewardmonth).format('0,0.00')} FDR - {numeral(snrewardmonth * this.props.coin.usd).format('0,0.00') } $</div>
+                <div>Yearly Rewars: {numeral(snrewardyear).format('0,0.00')} FDR - {numeral(snrewardyear * this.props.coin.usd).format('0,0.00') } $</div>
                 </b>
               </div>
             </div>
@@ -218,10 +219,13 @@ class Statistics extends Component {
                 <h5>Online: {this.props.coin.cnOn}</h5>
                 <div>
                   <b>
-                  <div>Collateral : {blockchain.cncoins} FDR</div>
-                  <div>Daily Rewards: {numeral(cnrewardday).format('0,0.00')} FDR</div>
-                  <div>Monthly Rewards: {numeral(cnrewardmonth).format('0,0.00')} FDR</div>
-                  <div>Yearly Rewars: {numeral(cnrewardyear).format('0,0.00')} FDR</div>
+                  <br/>
+                  <div>Collateral : {blockchain.cncoins} FDR - {numeral(blockchain.cncoins * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Daily Rewards: {numeral(cnrewardday).format('0,0.00')} FDR - {numeral(cnrewardday * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Monthly Rewards: {numeral(cnrewardmonth).format('0,0.00')} FDR - {numeral(cnrewardmonth * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Yearly Rewars: {numeral(cnrewardyear).format('0,0.00')} FDR - {numeral(cnrewardyear * this.props.coin.usd).format('0,0.00') } $</div>
+                  <br/>
+                  <br/>
                   </b>
                 </div>
               </div>
@@ -231,10 +235,13 @@ class Statistics extends Component {
                 <h5>Online: {this.props.coin.rnOn}</h5>
                 <div>
                   <b>
-                  <div>Collateral : {blockchain.rncoins} FDR</div>
-                  <div>Daily Rewards: {numeral(rnrewardday).format('0,0.00')} FDR</div>
-                  <div>Monthly Rewards: {numeral(rnrewardmonth).format('0,0.00')} FDR</div>
-                  <div>Yearly Rewars: {numeral(rnrewardyear).format('0,0.00')} FDR</div>
+                  <br/>
+                  <div>Collateral : {blockchain.rncoins} FDR - {numeral(blockchain.rncoins * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Daily Rewards: {numeral(rnrewardday).format('0,0.00')} FDR - {numeral(rnrewardday * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Monthly Rewards: {numeral(rnrewardmonth).format('0,0.00')} FDR - {numeral(rnrewardmonth * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Yearly Rewars: {numeral(rnrewardyear).format('0,0.00')} FDR - {numeral(rnrewardyear * this.props.coin.usd).format('0,0.00') } $</div>
+                  <br/>
+                  <br/>
                   </b>
                 </div>
               </div>
