@@ -13,7 +13,8 @@ const CardLinks = () => (
     <a href="https://twitter.com/FD_Reserve" target="_blank" rel="nofollow noopener">Twitter</a><br />
     <a href="https://medium.com/@FDR_Project_EN" target="_blank" rel="nofollow noopener">Medium</a><br />
     <a href="https://www.linkedin.com/company/fdr-project/" target="_blank" rel="nofollow noopener">Linked In</a><br />
-    <a href="https://bitcointalk.org/index.php?topic=4930081.0" target="_blank" rel="nofollow noopener">Bitcointalk</a>
+    <a href="https://bitcointalk.org/index.php?topic=4930081.0" target="_blank" rel="nofollow noopener">Bitcointalk</a><br />
+    <br />
   </Card>
 );
 
