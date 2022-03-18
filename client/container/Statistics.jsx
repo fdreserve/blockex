@@ -20,6 +20,7 @@ class Statistics extends Component {
     coin: PropTypes.object.isRequired,
     // Dispatch
     getCoins: PropTypes.func.isRequired,
+    getSupply: PropTypes.func.isRequired,
     getTXs: PropTypes.func.isRequired
   };
 
@@ -28,6 +29,7 @@ class Statistics extends Component {
 
     this.state = {
       coins: [],
+      supply: { c: 0.0, t: 0.0, m: 0.0 },
       error: null,
       loading: true,
       txs: []
@@ -35,6 +37,9 @@ class Statistics extends Component {
   };
 
   componentDidMount() {
+    this.props
+      .getSupply()
+      .then(supply => this.setState({ supply }))
     Promise.all([
       this.props.getCoins(),
       this.props.getTXs()
@@ -86,7 +91,10 @@ class Statistics extends Component {
         prices.set(k, c.usd);
       }
     });
-    
+  
+  const blocktime = blockchain.avgBlockTime;
+  const currentblockreward = blockchain.getBlockSubsidy(this.props.coin.blocks); 
+     
   //Mns Roi
   const sns = this.props.coin.snOn;
   const cns = this.props.coin.cnOn;
@@ -97,6 +105,7 @@ class Statistics extends Component {
   const snroi = blockchain.getSnROI(snsubsidy, sns);
   const cnroi = blockchain.getCnROI(cnsubsidy, cns);
   const rnroi = blockchain.getRnROI(rnsubsidy, rns);
+  
   // Mn Rewards
   const snblockday = blockchain.getSNBlocksPerDay(sns);
   const cnblockday = blockchain.getCNBlocksPerDay(cns);
@@ -116,6 +125,14 @@ class Statistics extends Component {
   const snrewardyear = (snblockyear  * snsubsidy);
   const cnrewardyear = (cnblockyear * cnsubsidy);
   const rnrewardyear = (rnblockyear * rnsubsidy);
+  
+  //Supply
+  const totalsupply = this.state.supply.t;
+  const circusupply = this.state.supply.c;
+  const maxsupply = this.state.supply.m;
+  const lockmnsupp = ((rns * blockchain.rncoins) + (cns * blockchain.cncoins) + (sns * blockchain.mncoins));
+  const lockmnperc = (lockmnsupp * 100 / totalsupply);
+  const circusupplmn = (totalsupply - lockmnsupp);
   
 
     // Generate averages for each key in each map.
@@ -154,10 +171,24 @@ class Statistics extends Component {
 
     return (
       <div className="animated fadeInUp">
-        <HorizontalRule title="FDR Statistics" />
+        <HorizontalRule title="French Digital Reserves Statistics" />
         {Array.from(hashes.keys()).slice(1, -1).length <= 6 && <Notification />}
         <div>
           <div className="row">
+          <div className="col-md-12 col-lg-6">
+                <h3>Coin Statistics</h3>
+                <h4>French Digital Reserve</h4>
+                <h5>Block Heigt: {this.props.coin.blocks}</h5>
+                <div>
+                  <b>
+                  <div>Block Reward: {currentblockreward} {config.coinDetails.shortName}</div>
+                  <div>Block Time: {blocktime} Seconds</div>
+                  <br/>
+                  <div>MarketCap : {numeral(totalsupply * this.props.coin.usd).format('0,0.00')} $</div>
+                  <br/>
+                  </b>
+                </div>
+              </div>
             <div className="col-md-12 col-lg-6">
               <h3>{config.coinDetails.shortName} Price USD</h3>
               <h4>{numeral(this.props.coin.usd).format('$0,0.00')} {day}</h4>
@@ -170,6 +201,21 @@ class Statistics extends Component {
                   labels={Array.from(prices.keys()).slice(1, -1)} />
               </div>
             </div>
+          </div>
+          <div className="row">
+            <div className="col-md-12 col-lg-6">
+                <h3>Supply Statistics</h3>
+                <h4> </h4>
+                <h3> </h3>
+                <div>
+                  <b>
+                  <div>Max Supply: {numeral(maxsupply).format('0,0.00')} {config.coinDetails.shortName}</div>
+                  <div>Current supply: {numeral(totalsupply).format('0,0.00')} {config.coinDetails.shortName}</div>
+                  <div>Lock in Masternodes:  {numeral(lockmnsupp).format('0,0.00')} {config.coinDetails.shortName} - {numeral(lockmnperc).format('0,0.0')} %</div>
+                  <div>Circulating supply: {numeral(circusupplmn).format('0,0.00')} {config.coinDetails.shortName}</div>
+                  </b>
+                </div>
+              </div>
               <div className="col-md-12 col-lg-6">
                 <h3>Network Hash Rate Last 7 Days</h3>
                 <h4>{numeral(netHash.hash).format('0,0.0000')} {netHash.label}/s {day}</h4>
@@ -182,7 +228,7 @@ class Statistics extends Component {
                     labels={Array.from(hashes.keys()).slice(1, -1)} />
                 </div>
               </div>
-          </div>
+            </div>
           <HorizontalRule title="Masternodes Statistics" />
           <div className="row">
             <div className="col-md-12 col-lg-6">
@@ -204,10 +250,10 @@ class Statistics extends Component {
               <div>
                 <b>
                 <br/>
-                <div>Collateral : {blockchain.mncoins} FDR - {numeral(blockchain.mncoins * this.props.coin.usd).format('0,0.00') } $</div>
-                <div>Daily Rewards: {numeral(snrewardday).format('0,0.00')} FDR - {numeral(snrewardday * this.props.coin.usd).format('0,0.00') } $</div> 
-                <div>Monthly Rewards: {numeral(snrewardmonth).format('0,0.00')} FDR - {numeral(snrewardmonth * this.props.coin.usd).format('0,0.00') } $</div>
-                <div>Yearly Rewars: {numeral(snrewardyear).format('0,0.00')} FDR - {numeral(snrewardyear * this.props.coin.usd).format('0,0.00') } $</div>
+                <div>Collateral : {blockchain.mncoins} {config.coinDetails.shortName} - {numeral(blockchain.mncoins * this.props.coin.usd).format('0,0.00') } $</div>
+                <div>Daily Rewards: {numeral(snrewardday).format('0,0.00')} {config.coinDetails.shortName} - {numeral(snrewardday * this.props.coin.usd).format('0,0.00') } $</div> 
+                <div>Monthly Rewards: {numeral(snrewardmonth).format('0,0.00')} {config.coinDetails.shortName} - {numeral(snrewardmonth * this.props.coin.usd).format('0,0.00') } $</div>
+                <div>Yearly Rewars: {numeral(snrewardyear).format('0,0.00')} {config.coinDetails.shortName} - {numeral(snrewardyear * this.props.coin.usd).format('0,0.00') } $</div>
                 </b>
               </div>
             </div>
@@ -220,10 +266,10 @@ class Statistics extends Component {
                 <div>
                   <b>
                   <br/>
-                  <div>Collateral : {blockchain.cncoins} FDR - {numeral(blockchain.cncoins * this.props.coin.usd).format('0,0.00') } $</div>
-                  <div>Daily Rewards: {numeral(cnrewardday).format('0,0.00')} FDR - {numeral(cnrewardday * this.props.coin.usd).format('0,0.00') } $</div>
-                  <div>Monthly Rewards: {numeral(cnrewardmonth).format('0,0.00')} FDR - {numeral(cnrewardmonth * this.props.coin.usd).format('0,0.00') } $</div>
-                  <div>Yearly Rewars: {numeral(cnrewardyear).format('0,0.00')} FDR - {numeral(cnrewardyear * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Collateral : {blockchain.cncoins} {config.coinDetails.shortName} - {numeral(blockchain.cncoins * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Daily Rewards: {numeral(cnrewardday).format('0,0.00')} {config.coinDetails.shortName} - {numeral(cnrewardday * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Monthly Rewards: {numeral(cnrewardmonth).format('0,0.00')} {config.coinDetails.shortName} - {numeral(cnrewardmonth * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Yearly Rewars: {numeral(cnrewardyear).format('0,0.00')} {config.coinDetails.shortName} - {numeral(cnrewardyear * this.props.coin.usd).format('0,0.00') } $</div>
                   <br/>
                   <br/>
                   </b>
@@ -236,10 +282,10 @@ class Statistics extends Component {
                 <div>
                   <b>
                   <br/>
-                  <div>Collateral : {blockchain.rncoins} FDR - {numeral(blockchain.rncoins * this.props.coin.usd).format('0,0.00') } $</div>
-                  <div>Daily Rewards: {numeral(rnrewardday).format('0,0.00')} FDR - {numeral(rnrewardday * this.props.coin.usd).format('0,0.00') } $</div>
-                  <div>Monthly Rewards: {numeral(rnrewardmonth).format('0,0.00')} FDR - {numeral(rnrewardmonth * this.props.coin.usd).format('0,0.00') } $</div>
-                  <div>Yearly Rewars: {numeral(rnrewardyear).format('0,0.00')} FDR - {numeral(rnrewardyear * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Collateral : {blockchain.rncoins} {config.coinDetails.shortName} - {numeral(blockchain.rncoins * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Daily Rewards: {numeral(rnrewardday).format('0,0.00')} {config.coinDetails.shortName} - {numeral(rnrewardday * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Monthly Rewards: {numeral(rnrewardmonth).format('0,0.00')} {config.coinDetails.shortName} - {numeral(rnrewardmonth * this.props.coin.usd).format('0,0.00') } $</div>
+                  <div>Yearly Rewars: {numeral(rnrewardyear).format('0,0.00')} {config.coinDetails.shortName} - {numeral(rnrewardyear * this.props.coin.usd).format('0,0.00') } $</div>
                   <br/>
                   <br/>
                   </b>
@@ -253,13 +299,16 @@ class Statistics extends Component {
 }
 
 
+
 const mapDispatch = dispatch => ({
   getCoins: () => Actions.getCoinsWeek(dispatch),
+  getSupply: () => Actions.getSupply(dispatch),
   getTXs: () => Actions.getTXsWeek(dispatch)
+
 });
 
 const mapState = state => ({
-  coin: state.coin
+  coin: state.coin,
 });
 
 export default connect(mapState, mapDispatch)(Statistics);
