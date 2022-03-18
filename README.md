@@ -1,14 +1,12 @@
 ![FDR Logo](https://user-images.githubusercontent.com/68774649/117999810-85923900-b345-11eb-98bb-5913e1883a29.png)
 
-French Digital Reserve Explorer
-
-Based On Bulwark Explorer
+French Digital Reserve ExplorerBased On Bulwark Explorer
 =====
 
 Advanced blockchain eplorer for masternode, proof-of-stake chains.
 
 Features:
-
+- Tiers Masternodes
 - Address-to-address blockchain data storage powered by Bulwark Carver2D Rev3 algorithm
 - World's most advanced Proof Of Stake calculator based on real blockchain rewards data
 - Running address balance powered by Bulwark's "Perfect Ledger" technology
@@ -25,7 +23,7 @@ Features:
 4. `usermod -aG sudo explorer`
 5. Ensure your coin RPC is running
 6. `su explorer`
-7. `bash <( curl https://raw.githubusercontent.com/fdreserve/blockex/main/script/install.sh )`
+7. `bash <( curl https://raw.githubusercontent.com/fdreserve/blockex/main/script/install.sh )` // To improve
 
 ## Post-Installation
 
@@ -108,7 +106,7 @@ To setup the crontab please see run `crontab -e` to edit the crontab and paste t
 ```
 */1 * * * * cd /path/to/blockex && ./script/cron_block.sh >> ./tmp/block.log 2>&1
 */1 * * * * cd /path/to/blockex && /path/to/node ./cron/masternode.js >> ./tmp/masternode.log 2>&1
-*/1 * * * * cd /path/to/blockex && /path/to/node ./cron/peer.js >> ./tmp/peer.log 2>&1
+*/2 * * * * cd /path/to/blockex && /path/to/node ./cron/peer.js >> ./tmp/peer.log 2>&1
 */1 * * * * cd /path/to/blockex && /path/to/node ./cron/rich.js >> ./tmp/rich.log 2>&1
 */5 * * * * cd /path/to/blockex && /path/to/node ./cron/coin.js >> ./tmp/coin.log 2>&1
 0 0 * * * cd /path/to/blockex && /path/to/node ./cron/timeIntervals.js >> ./tmp/timeIntervals.log 2>&1
@@ -124,6 +122,9 @@ At this time only the client web interface needs to be built using webpack and t
 `yarn run start:api` - will start the api.
 
 `yarn run start:web` - will start the web, open browser [http://localhost:8081](http://localhost:8081).
+
+## Maintenance
+`pm2 start server/maintenance.js` - will start the maintenance mode.
 
 ## Test
 `yarn run test:client` - will run the client side tests.
