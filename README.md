@@ -1,6 +1,6 @@
 ![FDR Logo](https://user-images.githubusercontent.com/68774649/117999810-85923900-b345-11eb-98bb-5913e1883a29.png)
 
-French Digital Reserve ExplorerBased On Bulwark Explorer
+French Digital Reserve Explorer based On Bulwark Explorer
 =====
 
 Advanced blockchain eplorer for masternode, proof-of-stake chains.
