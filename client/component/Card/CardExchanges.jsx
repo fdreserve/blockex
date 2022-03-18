@@ -7,7 +7,6 @@ const CardExchanges = () => (
   //@todo move this to config to avoid conflicts
   <Card title="Exchanges">
 	  <a href="https://app.stex.com/en/trading/pair/USDT/FDR/1D" target="_blank" rel="nofollow noopener">Stex</a><br />
-    <a href="https://crex24.com/fr/exchange/FDR-BTC" target="_blank" rel="nofollow noopener">Crex24</a><br />
     <a href="https://dex.delion.online/market/DELION.FDR_DELION.BTC" target="_blank" rel="nofollow noopener">Delion</a><br />
     <br />
     <br />
@@ -15,6 +14,8 @@ const CardExchanges = () => (
     <br />
     <br />
     <br />
+    <br />
+    <br/>
   </Card>
 );
 
