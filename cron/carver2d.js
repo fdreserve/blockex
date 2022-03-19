@@ -5,7 +5,7 @@ const mongoose = require('mongoose');
 const { CarverAddressType, CarverMovementType, CarverTxType } = require('../lib/carver2d');
 const { CarverAddress, CarverMovement, CarverAddressMovement } = require('../model/carver2d');
 const { BlockRewardDetails } = require('../model/blockRewardDetails');
-
+const BlockChain = require('../lib/blockchain');
 const { UTXO } = require('../model/utxo');
 
 //@todo Move this file to lib/carver2d
@@ -186,6 +186,9 @@ const getRequiredMovement = async (params) => {
   let posAddressLabel = null;
   let powAddressLabel = null;
   let mnAddressLabel = null;
+  let mn2AddressLabel = null;
+  let mn3AddressLabel = null;
+  let devAddressLabel = null;
   let zerocoinOutAmount = 0;
 
   for (let vinIndex = 0; vinIndex < rpctx.vin.length; vinIndex++) {
@@ -268,12 +271,30 @@ const getRequiredMovement = async (params) => {
                 }
                 break;
               case CarverTxType.ProofOfStake:
-                if (voutIndex === rpctx.vout.length - 1) { // Assume last tx is always masternode reward
+                if (voutIndex === rpctx.vout.length - 5) { // Assume last tx is always masternode reward
                   // Masternode Reward / Governance 
-                  mnAddressLabel = addressLabel;
-                } else {
-                  // Proof of Stake Reward
                   posAddressLabel = addressLabel;
+                } 
+                else {
+                  if (voutIndex === rpctx.vout.length - 3) { // Assume last tx is always POW reward
+                    // Proof of Work Reward
+                    mnAddressLabel = addressLabel;
+                  } 
+                  else {
+                  if (voutIndex === rpctx.vout.length - 2) { // Assume last tx is always POW reward
+                    // Proof of Work Reward
+                    mn2AddressLabel = addressLabel;
+                  }else {
+                  if (voutIndex === rpctx.vout.length - 1) { // Assume last tx is always POW reward
+                    // Proof of Work Reward
+                    mn3AddressLabel = addressLabel;
+                  }
+                  else {
+                    // Masternode Reward / Governance 
+                    devAddressLabel = addressLabel;
+                  }
+                  }
+                  }
                 }
                 break;
               case CarverTxType.Zerocoin:
@@ -365,7 +386,17 @@ const getRequiredMovement = async (params) => {
       if (!mnRewardAmount) {
         throw 'MN reward not found?';
       }
+      const mn2RewardAmount = consolidatedAddressAmounts.get(mn2AddressLabel);
+        if (!mn2RewardAmount) {
+        throw 'MN reward not found?';
+      }
+      const mn3RewardAmount = consolidatedAddressAmounts.get(mn3AddressLabel);
+        if (!mn3RewardAmount) {
+        throw 'MN3 reward not found?';
+      }
       addToAddress(CarverAddressType.Masternode, `${mnAddressLabel}:MN`, -mnRewardAmount.amount);
+      addToAddress(CarverAddressType.Masternode, `${mn2AddressLabel}:MN`, -mn2RewardAmount.amount);
+      addToAddress(CarverAddressType.Masternode, `${mn3AddressLabel}:MN`, -mn3RewardAmount.amount);
     }
   }
 
@@ -490,9 +521,20 @@ const getBlockRewardDetails = async (rpcblock, rpctx, parsedMovement, newCarverM
           mnAgeBlocks = newCarverMovement.blockHeight - (lastMnRewardAddress.lastMovement ? lastMnRewardAddress.lastMovementBlockHeight : masternodeRewardAddress.blockHeight); // Use last reward for calculation or first reward
           mnAgeTime = newCarverMovement.date.getTime() - (lastMnRewardAddress.lastMovement ? lastMnRewardAddress.lastMovementDate.getTime() : masternodeRewardAddress.date.getTime()); // Use last reward for calculation or first reward
           const mnRewardsPerYear = (365 * 24 * 60 * 60) / (mnAgeTime / 1000);
-          mnRoi = ((mnRewardsPerYear * masternodeRewardAmount) / config.coinDetails.masternodeCollateral) * -100;
-        }
-
+          const snreward = BlockChain.getSnSubsidy(lastMnRewardAddress.lastMovementBlockHeigh);
+          const cnreward = BlockChain.getCnSubsidy(lastMnRewardAddress.lastMovementBlockHeigh);
+          const rnreward = BlockChain.getRnSubsidy(lastMnRewardAddress.lastMovementBlockHeigh);
+          if (masternodeRewardAmount == snreward) {
+            mnRoi = ((mnRewardsPerYear * masternodeRewardAmount) / config.coinDetails.masternodeCollateral) * -100;
+          } else 
+                 if (masternodeRewardAmount == cnreward) {
+            mnRoi = ((mnRewardsPerYear * masternodeRewardAmount) / config.coinDetails.cashnodeCollateral) * -100;
+                  } 
+                  else 
+                 if (masternodeRewardAmount == rnreward) {
+            mnRoi = ((mnRewardsPerYear * masternodeRewardAmount) / config.coinDetails.reservenodeCollateral) * -100;
+                  }
+                }
         blockRewardDetails.masternode = {
           addressLabel: rewardAddressLabel,
           carverAddress: masternodeRewardAddress._id,
