@@ -21,7 +21,7 @@ const CardROI = ({ coin, supply }) => {
       <div className="mb-3">
         <div className="h5">
           {coin.mnsOn} Total Masternodes<br/>
-          {coin.snOn} Secure Nodes<br/>
+          {coin.snOn} Security Nodes<br/>
           {coin.cnOn} Cash Nodes<br/>
           {coin.rnOn} Reserve Nodes
         </div>
@@ -33,7 +33,7 @@ const CardROI = ({ coin, supply }) => {
         <div className="h5">
           {config.nftNodes.Rnodes} Reserve Nodes<br/>
           {config.nftNodes.Cnodes} Cash Nodes<br/>
-          {config.nftNodes.Snodes} Secure Nodes
+          {config.nftNodes.Snodes} Security Nodes
         </div>
       </div>
       <div className="mb-3">
