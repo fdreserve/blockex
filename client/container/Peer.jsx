@@ -57,9 +57,14 @@ class Peer extends Component {
               </div>
             )
           })) } />
-          <HorizontalRule title="AddNodes" />
-          <div>
-          <br/>
+       <div className="row">
+          <div className="col-md-12 col-lg-6">
+            <HorizontalRule title="Snapshot" />
+            <a href="https://downloads.fdreserve.com/bootstraps/fdr/snapshot.zip" target="_blank" rel="nofollow noopener">BlockChain Snapshot</a><br />
+          </div>
+          <div className="col-md-12 col-lg-6">
+            <HorizontalRule title="Addnodes" />
+            <div>
           <h5>addnode=161.97.167.197</h5><br/>
           <h5>addnode=161.97.167.201</h5><br/>
           <h5>addnode=144.91.95.43</h5><br/>
@@ -74,9 +79,9 @@ class Peer extends Component {
           <h5>addnode=[2a02:c207:2051:9093::1]</h5><br/>
           <h5>addnode=[2a02:c206:2051:9083::1]</h5><br/>
           <h5>addnode=[2a02:c206:2051:9077::1]</h5><br/>
-          <br/>
-          <br/>
+            </div>
           </div>
+        </div>
       </div>
     );
   };
