@@ -129,6 +129,7 @@ class Statistics extends Component {
   //Supply
   const totalsupply = this.state.supply.t;
   const circusupply = this.state.supply.c;
+  const burnedsupply = this.state.supply.b;
   const maxsupply = this.state.supply.m;
   const lockmnsupp = ((rns * blockchain.rncoins) + (cns * blockchain.cncoins) + (sns * blockchain.mncoins));
   const lockmnperc = (lockmnsupp * 100 / totalsupply);
@@ -211,6 +212,7 @@ class Statistics extends Component {
                   <b>
                   <div>Max Supply: {numeral(maxsupply).format('0,0.00')} {config.coinDetails.shortName}</div>
                   <div>Current supply: {numeral(totalsupply).format('0,0.00')} {config.coinDetails.shortName}</div>
+                  <div>Burned supply: {numeral(burnedsupply).format('0,0.00')} {config.coinDetails.shortName}</div>
                   <div>Lock in Masternodes:  {numeral(lockmnsupp).format('0,0.00')} {config.coinDetails.shortName} - {numeral(lockmnperc).format('0,0.0')} %</div>
                   <div>Circulating supply: {numeral(circusupplmn).format('0,0.00')} {config.coinDetails.shortName}</div>
                   </b>
@@ -244,7 +246,7 @@ class Statistics extends Component {
               </div>
             </div>
             <div className="col-md-12 col-lg-6">
-              <h3>Secure Node Statistics</h3>
+              <h3>Security Node Statistics</h3>
               <h4>ROI: {numeral(snroi).format('0,0.0')}%</h4>
               <h5>Online: {this.props.coin.snOn}</h5>
               <div>
