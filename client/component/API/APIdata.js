@@ -71,6 +71,11 @@ const APIdata = [
         path: '/api/peer'
       },
       {
+        name: 'getBurned',
+        info: 'Returns the total burned supply.',
+        path: '/api/burned'
+      },
+      {
         name: 'getSupply',
         info: 'Returns circulating and total supply information.<br />https://github.com/coincheckup/crypto-supplies',
         path: '/api/supply'
