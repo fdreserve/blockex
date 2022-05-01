@@ -438,6 +438,16 @@ const getPeer = (req, res) => {
     });
 };
 
+const getBurned = async (req, res) => {
+  try {
+    const balburn = await CarverAddress.findOne({ label: config.coinDetails.burnAddress }).populate({ path: "lastMovement", select: { carverMovement: 1 }, populate: { path: 'carverMovement', select: { date: 1 } } }); 
+    res.json(balburn.balance);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send(err.message || err);
+  }
+};
+
 /**
  * Get coin supply information for usage.
  * https://github.com/coincheckup/crypto-supplies
@@ -446,15 +456,48 @@ const getPeer = (req, res) => {
  */
 const getSupply = async (req, res) => {
   try {
-    let c = 0; // Circulating supply. @todo
-    let t = 0; // Total supply.
+    let c = 0; // Circulating Supply.
+    let t = 0; // Total Supply.
+    let b = 0; // Burned Supply
+    let m = 0; // Max Supply.
 
-    const totalSupply = await cache.getFromCache("supply", moment().utc().add(1, 'hours').unix(), async () => {
-      const balanceAgregation = await CarverAddress.aggregate([{ $match: { carverAddressType: 1 } }, { $group: { _id: null, total: { $sum: '$balance' } } }]);
-      return balanceAgregation[0].total;
-    });
+      const balburn = await CarverAddress.findOne({
+        label: config.coinDetails.burnAddress,
+      }).populate({
+        path: "lastMovement",
+        select: { carverMovement: 1 },
+        populate: { path: "carverMovement", select: { date: 1 } },
+      });
 
-    const supply = { c: (totalSupply - ((config.nftNodes.Rnodes * config.coinDetails.reservenodeCollateral) + (config.nftNodes.Cnodes * config.coinDetails.cashnodeCollateral) + (config.nftNodes.Snodes * mncoins))), t: totalSupply, m: chain.maxSupply }
+    const coinBurned = balburn.balance;
+
+    const coin = await Coin.findOne().sort({ createdAt: -1 });
+    const totalSupply = await cache.getFromCache(
+      "supply",
+      moment().utc().add(1, "hours").unix(),
+      async () => {
+        const balanceAgregation = await CarverAddress.aggregate([
+          { $match: { carverAddressType: 1 } },
+          { $group: { _id: null, total: { $sum: "$balance" } } },
+        ]);
+        return balanceAgregation[0].total;
+      }
+    );
+
+    const supply = {
+      c:
+        totalSupply -
+        (coin.rnOn * config.coinDetails.reservenodeCollateral +
+          coin.cnOn * config.coinDetails.cashnodeCollateral +
+          coin.snOn * mncoins - coinBurned),
+      t: totalSupply,
+      l:
+        coin.rnOn * config.coinDetails.reservenodeCollateral +
+        coin.cnOn * config.coinDetails.cashnodeCollateral +
+        coin.snOn * mncoins,
+      b: coinBurned,
+      m: chain.maxSupply,
+    };
 
     res.json(supply);
   } catch (err) {
@@ -936,6 +979,7 @@ module.exports = {
   getMasternodeByAddress,
   getMasternodeCount,
   getPeer,
+  getBurned,
   getSupply,
   getTop100,
   getTXLatest,
