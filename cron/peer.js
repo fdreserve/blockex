@@ -29,7 +29,7 @@ async function syncPeer() {
 
     const p = new Peer({
       _id: parts[0],
-      country: geoip.country_name,
+      country: geoip.country,
       countryCode: geoip.country_code,
       createdAt: date,
       ip: parts[0],
