@@ -133,7 +133,9 @@ class Statistics extends Component {
   const maxsupply = this.state.supply.m;
   const lockmnsupp = ((rns * blockchain.rncoins) + (cns * blockchain.cncoins) + (sns * blockchain.mncoins));
   const lockmnperc = (lockmnsupp * 100 / totalsupply);
-  const circusupplmn = (totalsupply - lockmnsupp);
+  const locknftsupp = ((config.nftNodes.Rnodes * blockchain.rncoins) + (config.nftNodes.Cnodes * blockchain.cncoins) + (config.nftNodes.Snodes * blockchain.mncoins));
+  const locknftperc = (locknftsupp * 100 / totalsupply);
+  const circusupplmn = (totalsupply - lockmnsupp - burnedsupply);
   
 
     // Generate averages for each key in each map.
@@ -214,6 +216,7 @@ class Statistics extends Component {
                   <div>Current supply: {numeral(totalsupply).format('0,0.00')} {config.coinDetails.shortName}</div>
                   <div>Burned supply: {numeral(burnedsupply).format('0,0.00')} {config.coinDetails.shortName}</div>
                   <div>Lock in Masternodes:  {numeral(lockmnsupp).format('0,0.00')} {config.coinDetails.shortName} - {numeral(lockmnperc).format('0,0.0')} %</div>
+                  <div>Lock in NFT Masternodes:  {numeral(locknftsupp).format('0,0.00')} {config.coinDetails.shortName} - {numeral(locknftperc).format('0,0.0')} %</div>
                   <div>Circulating supply: {numeral(circusupplmn).format('0,0.00')} {config.coinDetails.shortName}</div>
                   </b>
                 </div>
