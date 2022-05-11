@@ -215,8 +215,8 @@ class Statistics extends Component {
                   <div>Max Supply: {numeral(maxsupply).format('0,0.00')} {config.coinDetails.shortName}</div>
                   <div>Current supply: {numeral(totalsupply).format('0,0.00')} {config.coinDetails.shortName}</div>
                   <div>Burned supply: {numeral(burnedsupply).format('0,0.00')} {config.coinDetails.shortName}</div>
-                  <div>Lock in Masternodes:  {numeral(lockmnsupp).format('0,0.00')} {config.coinDetails.shortName} - {numeral(lockmnperc).format('0,0.0')} %</div>
-                  <div>Lock in NFT Masternodes:  {numeral(locknftsupp).format('0,0.00')} {config.coinDetails.shortName} - {numeral(locknftperc).format('0,0.0')} %</div>
+                  <div>Locked in Masternodes:  {numeral(lockmnsupp).format('0,0.00')} {config.coinDetails.shortName} - {numeral(lockmnperc).format('0,0.0')} %</div>
+                  <div>Locked in NFT Masternodes:  {numeral(locknftsupp).format('0,0.00')} {config.coinDetails.shortName} - {numeral(locknftperc).format('0,0.0')} %</div>
                   <div>Circulating supply: {numeral(circusupplmn).format('0,0.00')} {config.coinDetails.shortName}</div>
                   </b>
                 </div>
